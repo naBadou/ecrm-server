@@ -14,12 +14,11 @@ exports.transporters = async function (req, res) {
 // Insert a new user
 
 exports.newManager = async function (req, res) {
-  const User = new Shift({
+  const User = new _Manager({
     username: req.body.username,
     fireID: req.body.fireID,
     activity: req.body.activity,
     contracts: req.body.contracts,
-    created: new Date(),
   });
   User.save()
     .then((data) =>
@@ -31,7 +30,7 @@ exports.newManager = async function (req, res) {
     .catch((err) => console.log(err));
 };
 exports.newTransporter = async function (req, res) {
-  const User = new Shift({
+  const User = new _Transporter({
     username: req.body.username,
     fireID: req.body.fireID,
     activity: req.body.activity,
