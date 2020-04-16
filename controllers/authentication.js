@@ -25,6 +25,13 @@ exports.newUser = async function (req, res) {
     )
     .catch((err) => console.log(err));
 };
+
+exports.fetchUser = async function (req, res) {
+  await _User
+    .findOne({ fireID: req.params.fireID })
+    .then((user) => res.send(user));
+};
+
 exports.patchUser = async function (req, res) {
   _User
     .updateOne(
