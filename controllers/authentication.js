@@ -45,7 +45,6 @@ exports.patchUser = async function (req, res) {
     .then((data) =>
       res.send({
         success: true,
-        data: data,
       })
     )
     .catch((err) => console.log(err));
