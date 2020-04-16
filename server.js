@@ -11,8 +11,7 @@ const DB_UTI_PROD = process.env.DB_URI;
 
 const DATABASE_URI = DB_UTI_PROD || DB_URI_DEV;
 
-const managerRoutes = require("./routes/manager");
-const transporterRoutes = require("./routes/transporter");
+const userRoutes = require("./routes/users");
 
 const app = express();
 
@@ -33,8 +32,7 @@ app.get("/", (req, res) => {
   res.send("Hi man :)");
 });
 
-app.use("/manager", managerRoutes);
-app.use("/transporter", transporterRoutes);
+app.use("/users", userRoutes);
 
 mongoose.connect(DATABASE_URI, {
   useNewUrlParser: true,

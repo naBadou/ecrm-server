@@ -1,22 +1,18 @@
-const _Manager = require("../models/manager");
-const _Transporter = require("../models/transporter");
+const _User = require("../models/user");
 
 // Fetch all users
-exports.managers = async function (req, res) {
-  const managers = await _Manager.find();
-  res.send(managers);
-};
-exports.transporters = async function (req, res) {
-  const transporters = await _Transporter.find();
-  res.send(transporters);
+exports.users = async function (req, res) {
+  const users = await _User.find();
+  res.send(users);
 };
 
-// Insert a new user
-
-exports.newManager = async function (req, res) {
-  const User = new _Manager({
-    username: req.body.username,
+// Insert a user 1 (while creating firebase)
+exports.newUser = async function (req, res) {
+  const User = new _User({
+    email: req.body.email,
+    password: req.body.password,
     fireID: req.body.fireID,
+    type: req.body.type,
     activity: req.body.activity,
     contracts: req.body.contracts,
   });
@@ -29,15 +25,16 @@ exports.newManager = async function (req, res) {
     )
     .catch((err) => console.log(err));
 };
-exports.newTransporter = async function (req, res) {
-  const User = new _Transporter({
-    username: req.body.username,
-    fireID: req.body.fireID,
-    activity: req.body.activity,
-    contracts: req.body.contracts,
-    created: new Date(),
-  });
-  User.save()
+exports.patchUser = async function (req, res) {
+  _User
+    .updateOne(
+      { fireID: req.body.fireID },
+      {
+        type: req.body.type,
+        activity: req.body.activity,
+        contracts: req.body.contracts,
+      }
+    )
     .then((data) =>
       res.send({
         success: true,
