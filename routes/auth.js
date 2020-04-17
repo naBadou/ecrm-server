@@ -6,6 +6,7 @@ const auth = require("../controllers/auth");
 router.post("/register", auth.register);
 router.put("/register", auth.pickType);
 
-// router.get("/:fireID", auth.fetchUser);
+// login / check type / grab user data
+router.get("/:fireID", auth.user);
 
 module.exports = router;

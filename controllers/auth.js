@@ -1,12 +1,6 @@
 const _User = require("../models/user");
 const mongoose = require("mongoose");
 
-// exports.fetchUser = async function (req, res) {
-//   const User = _User
-//     .findOne({ fireID: req.params.fireID })
-//     .then((user) => res.send(user));
-// };
-
 // After getting response from firebase, we should register user into our db
 exports.register = async function (req, res) {
   const User = new _User({
@@ -39,4 +33,10 @@ exports.pickType = async function (req, res) {
     .catch((err) => console.log(err));
 };
 
-// when user wants to login
+// fetch a user having fire base id
+exports.user = async function (req, res) {
+  _User
+    .findOne({ fireID: req.params.fireID })
+    .then((user) => res.send(user))
+    .catch((err) => console.log(err));
+};
