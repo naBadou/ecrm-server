@@ -21,13 +21,27 @@ exports.register = async function (req, res) {
 };
 
 // After registering user is logged, and now he should pick a type
-exports.pickType = async function (req, res) {
+// exports.pickType = async function (req, res) {
+//   _User
+//     .findOneAndUpdate({ fireID: req.body.fireID }, { type: req.body.type })
+//     .then(res.send("success"))
+//     .catch((err) => console.log(err));
+// };
+exports.pickType = function (req, res) {
+  const filter = { fireID: req.body.fireID };
+  const update = { $set: { type: req.body.type } };
+  const options = { new: true };
   _User
-    .findOneAndUpdate({ fireID: req.body.fireID }, { type: req.body.type })
-    .then(res.send("success"))
-    .catch((err) => console.log(err));
+    .findOneAndUpdate(filter, update, options)
+    .then((docs) => {
+      if (docs) {
+        res.send(docs);
+      } else {
+        res.send("error");
+      }
+    })
+    .catch((err) => console.log(err)(err));
 };
-
 // fetch a user having fire base id
 exports.user = async function (req, res) {
   _User
