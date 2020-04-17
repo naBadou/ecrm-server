@@ -11,7 +11,8 @@ const DB_UTI_PROD = process.env.DB_URI;
 
 const DATABASE_URI = DB_UTI_PROD || DB_URI_DEV;
 
-const userRoutes = require("./routes/users");
+const authRoutes = require("./routes/auth");
+const adminRoutes = require("./routes/admin");
 
 const app = express();
 
@@ -32,11 +33,13 @@ app.get("/", (req, res) => {
   res.send("Hi man :)");
 });
 
-app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
+app.use("/admin", adminRoutes);
 
 mongoose.connect(DATABASE_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: false,
   dbName: "ecrm0",
 });
 
