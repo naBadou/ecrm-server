@@ -23,13 +23,8 @@ exports.register = async function (req, res) {
 // After registering user is logged, and now he should pick a type
 exports.pickType = async function (req, res) {
   _User
-    .findOneAndUpdate(
-      { fireID: req.body.fireID },
-      {
-        type: req.body.type,
-      }
-    )
-    .then((data) => res.send(data))
+    .findOneAndUpdate({ fireID: req.body.fireID }, { type: req.body.type })
+    .then(res.send("success"))
     .catch((err) => console.log(err));
 };
 
