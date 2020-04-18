@@ -14,6 +14,9 @@ const DATABASE_URI = DB_UTI_PROD || DB_URI_DEV;
 const authRoutes = require("./routes/auth");
 const adminRoutes = require("./routes/admin");
 
+const managersRoutes = require("./routes/managers");
+const transportersRoutes = require("./routes/transporters");
+
 const app = express();
 
 app.use(morgan("tiny"));
@@ -38,6 +41,8 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
+app.use("/managers", managersRoutes);
+app.use("/transporters", transportersRoutes);
 
 mongoose.connect(DATABASE_URI, {
   useNewUrlParser: true,

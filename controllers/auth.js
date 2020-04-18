@@ -1,13 +1,17 @@
 const _User = require("../models/user");
-const mongoose = require("mongoose");
+const _Manager = require("../models/manager/manager");
+const _Transporter = require("../models/transporter/transporter");
 
 // After getting response from firebase, we should register user into our db
 exports.register = async function (req, res) {
   const User = new _User({
-    _id: new mongoose.Types.ObjectId(),
-    fireID: req.body.fireID,
+    uid: req.body.uid,
     email: req.body.email,
-    password: req.body.password,
+    created: {
+      day: new Date().getDate(),
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+    },
   });
   User.save()
     .then((data) => {
@@ -20,32 +24,65 @@ exports.register = async function (req, res) {
     });
 };
 
-// After registering user is logged, and now he should pick a type
-// exports.pickType = async function (req, res) {
-//   _User
-//     .findOneAndUpdate({ fireID: req.body.fireID }, { type: req.body.type })
-//     .then(res.send("success"))
-//     .catch((err) => console.log(err));
-// };
 exports.pickType = function (req, res) {
-  const filter = { fireID: req.body.fireID };
+  const filter = { uid: req.body.uid };
   const update = { $set: { type: req.body.type } };
   const options = { new: true };
   _User
     .findOneAndUpdate(filter, update, options)
     .then((docs) => {
-      if (docs) {
-        res.send(docs);
+      console.log(docs.email);
+      const EMAIL = docs.email;
+      if (docs.type === "transporter") {
+        const Transporter = new _Transporter({
+          uid: req.body.uid,
+          email: EMAIL,
+          created: {
+            day: new Date().getDate(),
+            month: new Date().getMonth(),
+            year: new Date().getFullYear(),
+          },
+        });
+        Transporter.save()
+          .then((data) => {
+            res.status(200).json(data);
+          })
+          .catch((err) => {
+            res.status(500).send({
+              error: err,
+            });
+          });
+      }
+      if (docs.type === "manager") {
+        const Manager = new _Manager({
+          uid: req.body.uid,
+          email: EMAIL,
+          created: {
+            day: new Date().getDate(),
+            month: new Date().getMonth(),
+            year: new Date().getFullYear(),
+          },
+        });
+        Manager.save()
+          .then((data) => {
+            res.status(200).json(data);
+          })
+          .catch((err) => {
+            res.status(500).send({
+              error: err,
+            });
+          });
       } else {
         res.send("error");
       }
     })
     .catch((err) => console.log(err)(err));
 };
+
 // fetch a user having fire base id
 exports.user = async function (req, res) {
   _User
-    .findOne({ fireID: req.params.fireID })
+    .findOne({ _id: req.params.id })
     .then((user) => res.send(user))
     .catch((err) => console.log(err));
 };
