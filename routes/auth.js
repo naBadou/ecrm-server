@@ -7,6 +7,6 @@ router.post("/register", auth.register);
 router.patch("/register", auth.pickType);
 
 // login / check type / grab user data
-router.get("/:fireID", auth.user);
+router.get("/:uid", auth.user);
 
 module.exports = router;

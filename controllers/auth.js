@@ -88,7 +88,7 @@ exports.user = async function (req, res) {
       if (user) {
         res.send(user);
       } else {
-        res.send("error");
+        res.send("error a zb");
       }
     })
     .catch((err) => console.log(err));
