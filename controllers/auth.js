@@ -28,12 +28,12 @@ exports.pickType = function (req, res) {
   const filter = { uid: req.body.uid };
   const update = { $set: { type: req.body.type } };
   const options = { new: true };
-  _User
-    .findOneAndUpdate(filter, update, options)
-    .then((docs) => {
-      console.log(docs.email);
-      const EMAIL = docs.email;
-      if (docs.type === "transporter") {
+
+  if (req.body.type === "transporter") {
+    _User
+      .findOneAndUpdate(filter, update, options)
+      .then((docs) => {
+        const EMAIL = docs.email;
         const Transporter = new _Transporter({
           uid: req.body.uid,
           email: EMAIL,
@@ -45,15 +45,22 @@ exports.pickType = function (req, res) {
         });
         Transporter.save()
           .then((data) => {
-            res.status(200).json(data);
+            res.send({
+              account: docs,
+              user: data,
+            });
           })
           .catch((err) => {
-            res.status(500).send({
-              error: err,
-            });
+            res.send({ error: true, message: err });
           });
-      }
-      if (docs.type === "manager") {
+      })
+      .catch((err) => console.log(err)(err));
+  }
+  if (req.body.type === "manager") {
+    _User
+      .findOneAndUpdate(filter, update, options)
+      .then((docs) => {
+        const EMAIL = docs.email;
         const Manager = new _Manager({
           uid: req.body.uid,
           email: EMAIL,
@@ -65,18 +72,17 @@ exports.pickType = function (req, res) {
         });
         Manager.save()
           .then((data) => {
-            res.status(200).json(data);
+            res.send({
+              account: docs,
+              user: data,
+            });
           })
           .catch((err) => {
-            res.status(500).send({
-              error: err,
-            });
+            res.send({ error: true, message: err });
           });
-      } else {
-        res.send("error");
-      }
-    })
-    .catch((err) => console.log(err)(err));
+      })
+      .catch((err) => console.log(err)(err));
+  }
 };
 
 // fetch a user having fire base id
