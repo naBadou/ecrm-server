@@ -81,8 +81,15 @@ exports.pickType = function (req, res) {
 
 // fetch a user having fire base id
 exports.user = async function (req, res) {
+  const ID = req.params.uid;
   _User
-    .findOne({ _id: req.params.id })
-    .then((user) => res.send(user))
+    .findOne({ uid: ID })
+    .then((user) => {
+      if (user) {
+        res.send(user);
+      } else {
+        res.send("error");
+      }
+    })
     .catch((err) => console.log(err));
 };
