@@ -11,11 +11,9 @@ const DB_UTI_PROD = process.env.DB_URI;
 
 const DATABASE_URI = DB_UTI_PROD || DB_URI_DEV;
 
-const authRoutes = require("./routes/auth");
-const adminRoutes = require("./routes/admin");
+const ROUTES_ADMIN = require("./routes/administration");
 
-const managersRoutes = require("./routes/managers");
-const transportersRoutes = require("./routes/transporters");
+const ROUTES_AUTHENTICATION = require("./routes/authentication");
 
 const app = express();
 
@@ -39,10 +37,8 @@ app.get("/", (req, res) => {
   res.send("Hi man :)");
 });
 
-app.use("/auth", authRoutes);
-app.use("/admin", adminRoutes);
-app.use("/managers", managersRoutes);
-app.use("/transporters", transportersRoutes);
+app.use("/auth", ROUTES_AUTHENTICATION);
+app.use("/admin", ROUTES_ADMIN);
 
 mongoose.connect(DATABASE_URI, {
   useNewUrlParser: true,
