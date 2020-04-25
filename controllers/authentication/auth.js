@@ -1,17 +1,19 @@
-const _ACCOUNT = require("../../models/Account");
-var jwt = require("jsonwebtoken");
+const _ACCOUNT = require('../../models/User/Account');
+const _MANAGER = require('../../models/User/Manager');
+const _TRANSPORTER = require('../../models/User/Transporter');
+
+var jwt = require('jsonwebtoken');
+
+require('../../constants/config');
 
 exports.auth = function (req, res) {
-  const token = req.body.token;
-  // check if expired
-  // check if valid
-  const data = jwt.decode(token, "shhhhh");
+	const decoded = jwt.decode(req.body.token, process.env.JWT_SECRET);
 
-  if (!data) {
-    return res.send({
-      error: true,
-      message: "Token is not valid",
-    });
-  }
-  res.send(data);
+	if (!decoded) {
+		return res.json({
+			error: true,
+			message: 'Token invalide',
+		});
+	}
+	res.json(decoded);
 };
